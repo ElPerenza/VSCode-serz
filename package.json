@@ -10,16 +10,49 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-serz.helloWorld"
+    "onCommand:vscode-serz.convert"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-serz.helloWorld",
-        "title": "Hello World"
+        "command": "vscode-serz.convert",
+        "category": "VSCode-serz",
+        "title": "Convert current file with serz"
       }
-    ]
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-serz.convert",
+          "when": "resourceExtname == .bin || resourceExtname == .xml"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "vscode-serz.convert",
+          "when": "resourceExtname == .bin || resourceExtname == .xml",
+          "group": "serzGroup@1"
+        }
+      ]
+    },
+    "keybindings":[
+      {
+        "command": "vscode-serz.convert",
+        "key": "alt+q",
+        "when": "resourceExtname == .bin || resourceExtname == .xml && editorFocus"
+      }
+    ],
+    "configuration": {
+      "title": "VSCode-serz",
+      "properties": {
+        "serzExecutablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Specifies the path to the serz executable to use for conversion."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
