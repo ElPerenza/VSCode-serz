@@ -46,7 +46,7 @@
     "configuration": {
       "title": "VSCode-serz",
       "properties": {
-        "serzExecutablePath": {
+        "vscode-serz.serzExePath": {
           "type": "string",
           "default": "",
           "description": "Specifies the path to the serz executable to use for conversion."
