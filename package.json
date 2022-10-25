@@ -3,6 +3,7 @@
   "displayName": "VSCode-serz",
   "description": "Integrates the serz.exe RailWorks utility in VS Code to quickly convert RailWorks' .bin files into .xml files and vice versa",
   "version": "0.0.1",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.72.0"
   },
