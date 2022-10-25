@@ -10,10 +10,27 @@ const execPromise = promisify(exec)
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
+	//the "convert" command converts a file chosen arbitrarily by the user
 	let cmdConvert = vscode.commands.registerCommand("vscode-serz.convert", async () => {
-		
+		//prompt the user to select a file to convert
+		let selectedFile = await vscode.window.showOpenDialog({
+			openLabel: "Convert",
+			title: "Select the file to convert",
+			canSelectFiles: true,
+			canSelectFolders: false,
+			canSelectMany: false,
+			filters: {
+				"XML files": ["xml"],
+				"BIN files": ["bin"]
+			},
+			defaultUri: vscode.workspace.workspaceFolders?.[0].uri
+		})
+		if(selectedFile !== undefined) {
+			await convertThenOpen(selectedFile[0].fsPath)
+		}
 	})
 
+	//the "convertCurrent" command converts the currently open file
 	let cmdConvertCurrent = vscode.commands.registerCommand("vscode-serz.convertCurrent", async () => {
 		let activeFilePath = vscode.window.activeTextEditor?.document.fileName
 		//for files bigger than 50MB activeTextEditor is undefined. As such, this command won't work, so direct the user to the "convert" command, which explicitly asks for the file to convert
