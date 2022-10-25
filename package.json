@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-serz.convert"
+    "onCommand:vscode-serz.convert",
+    "onCommand:vscode-serz.convertCurrent"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -18,19 +19,27 @@
       {
         "command": "vscode-serz.convert",
         "category": "VSCode-serz",
+        "title": "Convert a file with serz"
+      },
+      {
+        "command": "vscode-serz.convertCurrent",
+        "category": "VSCode-serz",
         "title": "Convert current file with serz"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "vscode-serz.convert",
+          "command": "vscode-serz.convert"
+        },
+        {
+          "command": "vscode-serz.convertCurrent",
           "when": "resourceExtname == .bin || resourceExtname == .xml"
         }
       ],
       "editor/context": [
         {
-          "command": "vscode-serz.convert",
+          "command": "vscode-serz.convertCurrent",
           "when": "resourceExtname == .bin || resourceExtname == .xml",
           "group": "serzGroup@1"
         }
@@ -39,6 +48,10 @@
     "keybindings":[
       {
         "command": "vscode-serz.convert",
+        "key": "shift+alt+q"
+      },
+      {
+        "command": "vscode-serz.convertCurrent",
         "key": "alt+q",
         "when": "resourceExtname == .bin || resourceExtname == .xml && editorFocus"
       }

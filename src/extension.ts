@@ -10,12 +10,25 @@ const execPromise = promisify(exec)
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	//register the conversion command
-	let disposable = vscode.commands.registerCommand('vscode-serz.convert', async () => {
-		await convertThenOpen(vscode.window.activeTextEditor.document.fileName)
+	let cmdConvert = vscode.commands.registerCommand("vscode-serz.convert", async () => {
+		
 	})
 
-	context.subscriptions.push(disposable)
+	let cmdConvertCurrent = vscode.commands.registerCommand("vscode-serz.convertCurrent", async () => {
+		let activeFilePath = vscode.window.activeTextEditor?.document.fileName
+		//for files bigger than 50MB activeTextEditor is undefined. As such, this command won't work, so direct the user to the "convert" command, which explicitly asks for the file to convert
+		if(activeFilePath === undefined) {
+			let selection = await vscode.window.showWarningMessage("It seems like you're currently trying to convert a file that is bigger than 50MB. " + 
+																"Due to VSCode's technical limitations, you need to explicitly tell which file you want to convert", "Choose file")
+			if(selection === "Choose file") {
+				vscode.commands.executeCommand("vscode-serz.convert")
+			}
+			return
+		}
+		await convertThenOpen(activeFilePath)
+	})
+
+	context.subscriptions.push(cmdConvert, cmdConvertCurrent)
 }
 
 // This method is called when your extension is deactivated
