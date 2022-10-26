@@ -20,8 +20,10 @@ export function activate(context: vscode.ExtensionContext) {
 			canSelectFolders: false,
 			canSelectMany: false,
 			filters: {
+				"Compatible files": ["xml", "bin"],
 				"XML files": ["xml"],
-				"BIN files": ["bin"]
+				"BIN files": ["bin"],
+				"All files": ["*"]
 			},
 			defaultUri: vscode.workspace.workspaceFolders?.[0].uri
 		})
