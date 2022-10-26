@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cRouteProperties xmlns:d="http://www.kuju.com/TnT/2003/Delta" d:version="1.0" d:id="138054388">
+	<ID>
+		<cGUID>
+			<UUID>
+				<e d:type="sUInt64">4767230879230552870</e>
+				<e d:type="sUInt64">2585847680561001915</e>
+			</UUID>
+			<DevString d:type="cDeltaString">0ecf6b26-9b3a-4228-bb35-1bdbc3c6e223</DevString>
+		</cGUID>
+	</ID>
+	<DisplayName>
+		<Localisation-cUserLocalisedString>
+			<English d:type="cDeltaString">A test RailWorks XML document</English>
+			<French d:type="cDeltaString"></French>
+			<Italian d:type="cDeltaString"></Italian>
+			<German d:type="cDeltaString"></German>
+			<Spanish d:type="cDeltaString"></Spanish>
+			<Dutch d:type="cDeltaString"></Dutch>
+			<Polish d:type="cDeltaString"></Polish>
+			<Russian d:type="cDeltaString"></Russian>
+			<Other/>
+			<Key d:type="cDeltaString">8d04b3bd-2097-4e97-9f69-6fe41d943186</Key>
+		</Localisation-cUserLocalisedString>
+	</DisplayName>
+	<InfrastructureModified d:type="bool">1</InfrastructureModified>
+	<BlueprintID>
+		<iBlueprintLibrary-cAbsoluteBlueprintID>
+			<BlueprintSetID>
+				<iBlueprintLibrary-cBlueprintSetID>
+					<Provider d:type="cDeltaString">DTG</Provider>
+					<Product d:type="cDeltaString">Academy</Product>
+				</iBlueprintLibrary-cBlueprintSetID>
+			</BlueprintSetID>
+			<BlueprintID d:type="cDeltaString">TemplateRoutes\TSA_RouteTemplate.xml</BlueprintID>
+		</iBlueprintLibrary-cAbsoluteBlueprintID>
+	</BlueprintID>
+	<Skies>
+		<cRouteBlueprint-sSkies>
+			<SpringSkyBlueprint>
+				<iBlueprintLibrary-cAbsoluteBlueprintID>
+					<BlueprintSetID>
+						<iBlueprintLibrary-cBlueprintSetID>
+							<Provider d:type="cDeltaString">DTG</Provider>
+							<Product d:type="cDeltaString">Academy</Product>
+						</iBlueprintLibrary-cBlueprintSetID>
+					</BlueprintSetID>
+					<BlueprintID d:type="cDeltaString">TimeOfDay\Spring.xml</BlueprintID>
+				</iBlueprintLibrary-cAbsoluteBlueprintID>
+			</SpringSkyBlueprint>
+			<SummerSkyBlueprint>
+				<iBlueprintLibrary-cAbsoluteBlueprintID>
+					<BlueprintSetID>
+						<iBlueprintLibrary-cBlueprintSetID>
+							<Provider d:type="cDeltaString">DTG</Provider>
+							<Product d:type="cDeltaString">Academy</Product>
+						</iBlueprintLibrary-cBlueprintSetID>
+					</BlueprintSetID>
+					<BlueprintID d:type="cDeltaString">TimeOfDay\Summer.xml</BlueprintID>
+				</iBlueprintLibrary-cAbsoluteBlueprintID>
+			</SummerSkyBlueprint>
+			<AutumnSkyBlueprint>
+				<iBlueprintLibrary-cAbsoluteBlueprintID>
+					<BlueprintSetID>
+						<iBlueprintLibrary-cBlueprintSetID>
+							<Provider d:type="cDeltaString">DTG</Provider>
+							<Product d:type="cDeltaString">Academy</Product>
+						</iBlueprintLibrary-cBlueprintSetID>
+					</BlueprintSetID>
+					<BlueprintID d:type="cDeltaString">TimeOfDay\Autumn.xml</BlueprintID>
+				</iBlueprintLibrary-cAbsoluteBlueprintID>
+			</AutumnSkyBlueprint>
+			<WinterSkyBlueprint>
+				<iBlueprintLibrary-cAbsoluteBlueprintID>
+					<BlueprintSetID>
+						<iBlueprintLibrary-cBlueprintSetID>
+							<Provider d:type="cDeltaString">DTG</Provider>
+							<Product d:type="cDeltaString">Academy</Product>
+						</iBlueprintLibrary-cBlueprintSetID>
+					</BlueprintSetID>
+					<BlueprintID d:type="cDeltaString">TimeOfDay\Winter.xml</BlueprintID>
+				</iBlueprintLibrary-cAbsoluteBlueprintID>
+			</WinterSkyBlueprint>
+		</cRouteBlueprint-sSkies>
+	</Skies>
+	<WeatherBlueprint>
+		<iBlueprintLibrary-cAbsoluteBlueprintID>
+			<BlueprintSetID>
+				<iBlueprintLibrary-cBlueprintSetID>
+					<Provider d:type="cDeltaString">DTG</Provider>
+					<Product d:type="cDeltaString">Academy</Product>
+				</iBlueprintLibrary-cBlueprintSetID>
+			</BlueprintSetID>
+			<BlueprintID d:type="cDeltaString">Weather\Cloudy.xml</BlueprintID>
+		</iBlueprintLibrary-cAbsoluteBlueprintID>
+	</WeatherBlueprint>
+	<TerrainBlueprint>
+		<iBlueprintLibrary-cAbsoluteBlueprintID>
+			<BlueprintSetID>
+				<iBlueprintLibrary-cBlueprintSetID>
+					<Provider d:type="cDeltaString">DTG</Provider>
+					<Product d:type="cDeltaString">Academy</Product>
+				</iBlueprintLibrary-cBlueprintSetID>
+			</BlueprintSetID>
+			<BlueprintID d:type="cDeltaString">Environment\Terrain\Terrain.xml</BlueprintID>
+		</iBlueprintLibrary-cAbsoluteBlueprintID>
+	</TerrainBlueprint>
+	<MapBlueprint>
+		<iBlueprintLibrary-cAbsoluteBlueprintID>
+			<BlueprintSetID>
+				<iBlueprintLibrary-cBlueprintSetID>
+					<Provider d:type="cDeltaString">DTG</Provider>
+					<Product d:type="cDeltaString">Academy</Product>
+				</iBlueprintLibrary-cBlueprintSetID>
+			</BlueprintSetID>
+			<BlueprintID d:type="cDeltaString">System\Map\map.xml</BlueprintID>
+		</iBlueprintLibrary-cAbsoluteBlueprintID>
+	</MapBlueprint>
+	<LockCounter d:type="sUInt32">1</LockCounter>
+	<Locked d:type="bool">0</Locked>
+	<MapProjection>
+		<cMapProjectionOwner d:id="136476334">
+			<MapProjection>
+				<cUTMMapProjection d:id="136471874">
+					<Origin>
+						<sGeoPosition>
+							<Lat d:type="sFloat64" d:alt_encoding="76711B0DE0054A40" d:precision="string">52.0459</Lat>
+							<Long d:type="sFloat64" d:alt_encoding="933A014D840DE1BF" d:precision="string">-0.5329</Long>
+						</sGeoPosition>
+					</Origin>
+					<MapOffset>
+						<sMapCoords>
+							<Easting d:type="sFloat64" d:alt_encoding="00000000F0A60441" d:precision="string">169182</Easting>
+							<Northing d:type="sFloat64" d:alt_encoding="00000080CC015641" d:precision="string">5.76901e+006</Northing>
+						</sMapCoords>
+					</MapOffset>
+					<ZoneNumber d:type="sInt32">30</ZoneNumber>
+					<ZoneLetter d:type="cDeltaString">U</ZoneLetter>
+				</cUTMMapProjection>
+			</MapProjection>
+		</cMapProjectionOwner>
+	</MapProjection>
+	<RBlueprintSetPreLoad>
+		<iBlueprintLibrary-cBlueprintSetID d:id="62748392">
+			<Provider d:type="cDeltaString">DTG</Provider>
+			<Product d:type="cDeltaString">Academy</Product>
+		</iBlueprintLibrary-cBlueprintSetID>
+		<iBlueprintLibrary-cBlueprintSetID d:id="62748394">
+			<Provider d:type="cDeltaString">DTG</Provider>
+			<Product d:type="cDeltaString">CologneKoblenz</Product>
+		</iBlueprintLibrary-cBlueprintSetID>
+	</RBlueprintSetPreLoad>
+	<AuthoredLanguage d:type="cDeltaString">it</AuthoredLanguage>
+	<Version d:type="sFloat32" d:alt_encoding="000000000000F03F" d:precision="string">1</Version>
+	<TimeZone d:type="sFloat32" d:alt_encoding="0000000000000000" d:precision="string">0</TimeZone>
+	<SummerTime d:type="sFloat32" d:alt_encoding="000000000020AC40" d:precision="string">3600</SummerTime>
+	<HasTimeZoneSet d:type="bool">0</HasTimeZoneSet>
+	<HasSpeedsigns d:type="bool">1</HasSpeedsigns>
+	<WorkshopId d:type="sUInt64">0</WorkshopId>
+	<WorkshopBy d:type="sUInt64">0</WorkshopBy>
+	<WorkshopTags d:type="cDeltaString"></WorkshopTags>
+</cRouteProperties>
