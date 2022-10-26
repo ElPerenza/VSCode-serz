@@ -1,6 +1,6 @@
 {
   "name": "vscode-serz",
-  "displayName": "VSCode-serz",
+  "displayName": "RailWorks Serz integration",
   "description": "Integrates the serz.exe RailWorks utility in VS Code to quickly convert RailWorks' .bin files into .xml files and vice versa",
   "version": "1.0.0",
   "license": "MIT",
@@ -21,12 +21,12 @@
     "commands": [
       {
         "command": "vscode-serz.convert",
-        "category": "VSCode-serz",
+        "category": "Serz",
         "title": "Convert a file with serz"
       },
       {
         "command": "vscode-serz.convertCurrent",
-        "category": "VSCode-serz",
+        "category": "Serz",
         "title": "Convert current file with serz"
       }
     ],
@@ -60,12 +60,12 @@
       }
     ],
     "configuration": {
-      "title": "VSCode-serz",
+      "title": "RailWorks Serz integration",
       "properties": {
         "vscode-serz.serzExePath": {
           "type": "string",
           "default": "",
-          "description": "Specifies the path to the serz executable to use for conversion."
+          "description": "Path to the serz executable to use for conversion."
         }
       }
     }
