@@ -6,5 +6,3 @@ This is an extension that integrates the serz.exe utility from the game Train Si
 This extension is intended as a replacement for the .bin editing capabilities of the now-defunct TS-Tools program, while also being much faster and more user freindly thanks to Visual Studio Code's superior code editing and Search and Replace features.  
 
 ![Extension demo](assets/demo.gif)
-
-*Extension logo created by [iconixar](https://www.flaticon.com/packs/file-18) from Flaticon*
