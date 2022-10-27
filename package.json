@@ -7,6 +7,10 @@
   "license": "MIT",
   "repository": "github:ElPerenza/VSCode-serz",
   "homepage": "https://github.com/ElPerenza/VSCode-serz",
+  "bugs": {
+    "url": "https://github.com/ElPerenza/VSCode-serz/issues"
+  },
+  "qna": "https://github.com/ElPerenza/VSCode-serz/issues",
   "engines": {
     "vscode": "^1.72.0"
   },
