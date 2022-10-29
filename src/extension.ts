@@ -89,7 +89,7 @@ async function convertThenOpen(filePath: string): Promise<void> {
 			progress.report({message: `Converting ${filePath} to ${fileExt === ".bin" ? ".xml" : ".bin"}`})
 			//execute serz.exe and throw an error if something went wrong
 			//serz usage: "/path/to/serz.exe file-to-convert.[bin, xml]"
-			let {stdout, stderr} = await execPromise(`${serzPath} "${filePath}"`)
+			let {stdout, stderr} = await execPromise(`"${serzPath}" "${filePath}"`)
 			if(stderr.length !== 0) {
 				throw new Error(stderr)
 			} else if(!stdout.includes("Conversion complete")) {
