@@ -11,6 +11,14 @@ const binExtensions = ["bin", "proxybin"]
 const allExtensions = [...xmlExtensions, ...binExtensions]
 const addDot = (extension: string) => `.${extension}`
 
+//map of the extensions and their converted equivalent
+const extensions = new Map<string, string>([
+	["xml", "bin"],
+	["proxyxml", "proxybin"],
+	["bin", "xml"],
+	["proxybin", "proxyxml"]
+])
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -82,18 +90,14 @@ async function convertThenOpen(filePath: string): Promise<void> {
 	}
 
 	//build the converted file's path
-	let fileExt = path.extname(filePath)
-	let convertedFile: string
-	if(fileExt === ".bin") {
-		convertedFile = filePath.replace(/(bin)$/, "xml")
-	} else {
-		convertedFile = filePath.replace(/(xml)$/, "bin")
-	}
+	let fileExt = path.extname(filePath).replace(/^./, "")
+	let convertedExt = extensions.get(fileExt)
+	let convertedFile = filePath.replace(new RegExp(`(${fileExt})$`), convertedExt)
 
 	//convert the file with serz.exe
 	try {
 		await vscode.window.withProgress({location: vscode.ProgressLocation.Notification}, async (progress) => {
-			progress.report({message: `Converting ${filePath} to ${fileExt === ".bin" ? ".xml" : ".bin"}`})
+			progress.report({message: `Converting ${filePath} to .${convertedExt}`})
 			//execute serz.exe and throw an error if something went wrong
 			//serz usage: "/path/to/serz.exe file-to-convert.[bin, xml]"
 			let {stdout, stderr} = await execPromise(`"${serzPath}" "${filePath}"`)

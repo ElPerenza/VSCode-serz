@@ -2,6 +2,10 @@
 
 All notable changes to this extension will be documented in this file.
 
+## [1.0.1] - 2022-10-30
+### Fixed
+- .proxyxml files now open in the editor after conversion
+
 ## [1.0.0] - 2022-10-30
 - Initial public release
 ### Added
