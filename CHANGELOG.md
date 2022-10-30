@@ -2,8 +2,10 @@
 
 All notable changes to this extension will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] - 2022-10-30
 - Initial public release
+### Added
+- Support for .proxyxml and .proxybin files
 
 ## [0.1.1] - 2022-10-30
 ### Fixed
