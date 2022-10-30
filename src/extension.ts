@@ -3,12 +3,19 @@ import * as fs from "fs"
 import * as path from "path"
 import { promisify } from "util"
 import * as vscode from "vscode"
-
 const execPromise = promisify(exec)
+
+//supported extensions
+const xmlExtensions = ["xml", "proxyxml"]
+const binExtensions = ["bin", "proxybin"]
+const allExtensions = [...xmlExtensions, ...binExtensions]
+const addDot = (extension: string) => `.${extension}`
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+
+	vscode.commands.executeCommand("setContext", "vscode-serz.supportedFiles", allExtensions.map(addDot))
 
 	//the "convert" command converts a file chosen arbitrarily by the user
 	let cmdConvert = vscode.commands.registerCommand("vscode-serz.convert", async () => {
@@ -20,9 +27,9 @@ export function activate(context: vscode.ExtensionContext) {
 			canSelectFolders: false,
 			canSelectMany: false,
 			filters: {
-				"Compatible files": ["xml", "bin"],
-				"XML files": ["xml"],
-				"BIN files": ["bin"],
+				"Compatible files": allExtensions,
+				"XML files": xmlExtensions,
+				"BIN files": binExtensions,
 				"All files": ["*"]
 			},
 			defaultUri: vscode.workspace.workspaceFolders?.[0].uri

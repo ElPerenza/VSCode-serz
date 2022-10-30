@@ -19,8 +19,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-serz.convert",
-    "onCommand:vscode-serz.convertCurrent"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -43,13 +42,13 @@
         },
         {
           "command": "vscode-serz.convertCurrent",
-          "when": "resourceExtname == .bin || resourceExtname == .xml"
+          "when": "resourceExtname in vscode-serz.supportedFiles"
         }
       ],
       "editor/context": [
         {
           "command": "vscode-serz.convertCurrent",
-          "when": "resourceExtname == .bin || resourceExtname == .xml",
+          "when": "resourceExtname in vscode-serz.supportedFiles",
           "group": "serzGroup@1"
         }
       ]
@@ -62,7 +61,7 @@
       {
         "command": "vscode-serz.convertCurrent",
         "key": "alt+q",
-        "when": "resourceExtname == .bin || resourceExtname == .xml && editorFocus"
+        "when": "resourceExtname in vscode-serz.supportedFiles && editorFocus"
       }
     ],
     "configuration": {

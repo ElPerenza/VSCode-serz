@@ -3,6 +3,10 @@ import testConfig from "./config"
 import * as fs from "fs"
 import * as vscode from "vscode"
 
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 describe("VSCode-serz tests", () => {
 	vscode.window.showInformationMessage("Start all tests.")
 
@@ -15,6 +19,7 @@ describe("VSCode-serz tests", () => {
 		let xmlDoc = await vscode.workspace.openTextDocument(`${testConfig.folder}/xml-test.xml`)
 		await vscode.window.showTextDocument(xmlDoc, vscode.ViewColumn.Active, false)
 		await vscode.commands.executeCommand("vscode-serz.convertCurrent")
+		await sleep(1000) //give vscode enough time to open the file (horrible solution but I don't have the time to come up with a better one now)
 		//check that the converted file exists and is the currently active document
 		assert(fs.existsSync(convertedXmlTest))
 		assert.strictEqual(vscode.window.activeTextEditor.document.fileName, vscode.Uri.file(convertedXmlTest).fsPath)
@@ -31,6 +36,7 @@ describe("VSCode-serz tests", () => {
 			disposable.dispose()
 
 			await vscode.commands.executeCommand("vscode-serz.convertCurrent")
+			await sleep(1000)
 			//check that the converted file exists and is the currently active document
 			assert(fs.existsSync(convertedBinTest))
 			assert.strictEqual(vscode.window.activeTextEditor.document.fileName, vscode.Uri.file(convertedBinTest).fsPath)
