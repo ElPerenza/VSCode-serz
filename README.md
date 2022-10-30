@@ -1,6 +1,6 @@
 # RailWorks Serz integration for Visual Studio Code
 
-This is an extension that integrates the serz.exe utility from the game Train Simulator Classic (also known as RailWorks) into Visual Studio Code, to convert the game `.bin` files to `.xml` and vice versa directly from within the editor.  
+This is an extension that integrates the serz.exe utility from the game Train Simulator Classic (also known as RailWorks) into Visual Studio Code, to convert the game `.bin` (and other related file types) files to `.xml` and vice versa directly from within the editor.  
 
 This extension is intended as a replacement for the .bin editing capabilities of the now-defunct TS-Tools program, while also being much faster and more user freindly thanks to Visual Studio Code's superior code editing and Search and Replace features.  
 
@@ -23,6 +23,10 @@ This extension exposes two commands to convert RailWorks files:
 - **Convert a file with serz** (`vscode-serz.convert`) lets you convert a .xml file to .bin and vice versa. You need to specify which file to convert yourself via the pop-up dialog. Can be invoked either via the Command Palette (open with `CTRL+SHIFT+P`) or via the keyboard shortcut `SHIFT+ALT+Q`.
 - **Convert current file with serz** (`vscode-serz.convertCurrent`) converts the currently focused file. This command requires no user input and can be invoked via che Command Palette, the keyboard shortcut `ALT+Q` or by right clicking on the file you want to convert and selecting "Convert current file with serz" from the opened menu.  
 Because of restrictions imposed by the editor, this command won't work with files that are larger than 50MB. If you need to convert large files, use the `convert` command instead.
+
+### Supported file types:
+- `.bin`, `.proxybin` for binary files
+- `.xml`, `.proxyxml` for text files
 
 ## Feedback, Bugs and Contributing
 
