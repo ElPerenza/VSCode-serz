@@ -25,8 +25,11 @@ This extension exposes two commands to convert RailWorks files:
 Because of restrictions imposed by the editor, this command won't work with files that are larger than 50MB. If you need to convert large files, use the `convert` command instead.
 
 ### Supported file types:
-- `.bin`, `.proxybin` for binary files
+- `.bin`, `.proxybin`, `.GeoPcDx`, `.TgPcDx`, `.XSec` for binary files
 - `.xml`, `.proxyxml` for text files
+
+### GeoPcDx, TgPcDx and XSec files support
+These binary file extensions behave slightly differently from the other ones: since they get converted to an .xml file by serz.exe, when get converted back they default to .bin and have to be renamed to the correct extension after conversion. The extension can automatically do this renaming process, however only if the binary file was previously converted by the extension (doesn't matter if in the current session or a previous one), as this lets the extension know what do do with the converted text file in case of the reverse conversion taking place. In other cases, you must rename the file yourself.
 
 ## Feedback, Bugs and Contributing
 
