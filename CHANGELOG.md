@@ -2,7 +2,7 @@
 
 All notable changes to this extension will be documented in this file.
 
-# [1.1.0] - 2022-10-31
+## [1.1.0] - 2022-10-31
 ### Added
 - Support for `.GeoPcDx`, `.TgPcDx` and `.XSec` files
 
