@@ -3,57 +3,76 @@ import testConfig from "./config"
 import * as fs from "fs"
 import * as vscode from "vscode"
 
-function sleep(ms: number) {
+function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+/**
+ * Opens the given file in the active editor.
+ * @param fileUri the URI pointing to the file to open 
+ */
+function openFile(fileUri: vscode.Uri): Promise<void> {
+	return new Promise((resolve, reject) => {
+		//check if the given file is already open in the active editor
+		if(vscode.window.activeTextEditor?.document.fileName === fileUri.fsPath) {
+			resolve()
+			return
+		}
+		let disposable = vscode.window.onDidChangeActiveTextEditor(() => {
+			//check that the active editor change corresponds to the file we wanted to open
+			if(vscode.window.activeTextEditor?.document.fileName === fileUri.fsPath) {
+				disposable.dispose()
+				resolve()
+			}
+		})
+		vscode.commands.executeCommand("vscode.open", fileUri).then(undefined, reject)
+	})
+}
+
+/**
+ * Test that the extension can correctly convert the given file to a file pointing to the converted file URI.
+ * @param originalFileUri the URI pointing to the file to convert
+ * @param convertedFileUri the URI pointing to the converted file
+ */
+async function testConversion(originalFileUri: vscode.Uri, convertedFileUri: vscode.Uri): Promise<void> {
+	await openFile(originalFileUri)
+	await vscode.commands.executeCommand("vscode-serz.convertCurrent")
+	await sleep(1000)
+	//check that the converted file exists and is the currently active document
+	assert(fs.existsSync(convertedFileUri.fsPath))
+	assert.strictEqual(vscode.window.activeTextEditor?.document.fileName, convertedFileUri.fsPath)
 }
 
 describe("VSCode-serz tests", () => {
 	vscode.window.showInformationMessage("Start all tests.")
 
 	//the converted files created by serz.exe during testing
-	const convertedXmlTest = `${testConfig.folder}/xml-test.bin`
-	const convertedBinTest = `${testConfig.folder}/bin-test.xml`
+	const convertedXmlTest = vscode.Uri.file(`${testConfig.folder}/xml-test.bin`)
+	const convertedBinTest = vscode.Uri.file(`${testConfig.folder}/bin-test.xml`)
+	const convertedGeoTest = vscode.Uri.file(`${testConfig.folder}/geo-test.xml`)
 
 	it("Can convert an XML file", async () => {
-
-		let xmlDoc = await vscode.workspace.openTextDocument(`${testConfig.folder}/xml-test.xml`)
-		await vscode.window.showTextDocument(xmlDoc, vscode.ViewColumn.Active, false)
-		await vscode.commands.executeCommand("vscode-serz.convertCurrent")
-		await sleep(1000) //give vscode enough time to open the file (horrible solution but I don't have the time to come up with a better one now)
-		//check that the converted file exists and is the currently active document
-		assert(fs.existsSync(convertedXmlTest))
-		assert.strictEqual(vscode.window.activeTextEditor.document.fileName, vscode.Uri.file(convertedXmlTest).fsPath)
+		await testConversion(vscode.Uri.file(`${testConfig.folder}/xml-test.xml`), convertedXmlTest)
 	})
 
-	it("Can convert a BIN file", (done) => {
+	it("Can convert a BIN file", async () => {
+		await testConversion(vscode.Uri.file(`${testConfig.folder}/bin-test.bin`), convertedBinTest)
+	})
 
-		let disposable = vscode.window.onDidChangeActiveTextEditor(async () => {
-
-			//when opening a binary file and setting it as the active document, the activeTextDocument property briefly transitions to undefined before being set to the binary document
-			if(vscode.window.activeTextEditor === undefined) {
-				return
-			}
-			disposable.dispose()
-
-			await vscode.commands.executeCommand("vscode-serz.convertCurrent")
-			await sleep(1000)
-			//check that the converted file exists and is the currently active document
-			assert(fs.existsSync(convertedBinTest))
-			assert.strictEqual(vscode.window.activeTextEditor.document.fileName, vscode.Uri.file(convertedBinTest).fsPath)
-			done() //tells Mocha that the test has finished when having an async callback in the test
-		})
-
-		//workspace.openTextDocument doesn't work with .bin files so we need to use this
-		//also awaiting this promise still leaves activeTextEditor as undefined, so we use the onDidChangeActiveTextEditor callback above to check when the .bin file becomes active
-		vscode.commands.executeCommand("vscode.open", vscode.Uri.file(`${testConfig.folder}/bin-test.bin`))
+	it("Can convert a GeoPcDx file", async () => {
+		const originalGeoTest = vscode.Uri.file(`${testConfig.folder}/geo-test.GeoPcDx`)
+		//first convert the geo file to xml (so that the extension knows that it's a geo), then convert it back
+		await testConversion(originalGeoTest, convertedGeoTest)
+		await testConversion(convertedGeoTest, originalGeoTest)
 	})
 
 	after(async () => {
 		//remove the unnecessary files created during testing
-		fs.rmSync(convertedXmlTest, {force: true})
-		fs.rmSync(convertedBinTest, {force: true})
-		//close the 4 opened files in the editor
-		for(let i=0; i<4; i++) {
+		fs.rmSync(convertedXmlTest.fsPath, {force: true})
+		fs.rmSync(convertedBinTest.fsPath, {force: true})
+		fs.rmSync(convertedGeoTest.fsPath, {force: true})
+		//close the 6 opened files in the editor
+		for(let i=0; i<6; i++) {
 			await vscode.commands.executeCommand("workbench.action.closeActiveEditor")
 		}
 	})
