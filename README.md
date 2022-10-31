@@ -56,7 +56,8 @@ This extension contributes 2 commands (`vscode-serz.convert` and `vscode-serz.co
 
 - `.vscode/`: contains the VSCode launch configurations, tasks and settings
 - `assets/`: contains the extension logo and the demo gif used in this readme.
-- `src/extension.ts`: contains the extension code.
+- `src/`: contains the extension code and tests.
+- `src/extension.ts`: contains the extension entry point.
 - `src/test/suite/extension.test.ts`: contains the extension tests, written with Mocha.
 - `test-assets/`: contains the .bin and .xml files used for testing.
 - `package.json`: contains the extension properties and contributes definitions
