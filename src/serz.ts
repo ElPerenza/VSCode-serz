@@ -94,24 +94,35 @@ export default class Serz {
     }
 
     /**
-     * Converts the given file with serz.exe.
-     * @param filePath path to the file to convert
-     * @returns the path to the converted file
-     * @throws {@linkcode SerzError} if the serz executable file found in the configuration is incorrect or if the conversion process fails.
+     * Retrieves the serz executable path found in the configuration and checks if it exists.
+     * If the path points to a directory, the method searches for serz.exe inside that directory.
+     * @returns absolute path to the serz executable
+     * @throws {@linkcode SerzError} if the path to serz found in the configuration doesn't exist
      */
-    public async convert(filePath: string): Promise<string> {
+    private getSerzPath(): string {
 
-        //get the serz.exe path from the settings and verify that it exists
         let serzPath = workspace.getConfiguration().get<string>(this.serzPathKey) ?? ""
         if(!fs.existsSync(serzPath)) {
             throw new SerzError(SerzError.Code.SerzPathInvalid, `Path "${serzPath}" does not exist.`)
         }
-        if((await fsp.lstat(serzPath)).isDirectory()) {
+
+        if(fs.lstatSync(serzPath).isDirectory()) {
             serzPath = path.join(serzPath, "serz.exe")
             if(!fs.existsSync(serzPath)) {
                 throw new SerzError(SerzError.Code.SerzPathInvalid, `Path "${serzPath}" does not exist.`)
             }
         }
+
+        return serzPath
+    }
+
+    /**
+     * Converts the given file with serz.exe.
+     * @param filePath path to the file to convert
+     * @returns the path to the converted file
+     * @throws {@linkcode SerzError} if the serz executable file found in the configuration is incorrect or if the conversion process fails
+     */
+    public async convert(filePath: string): Promise<string> {
 
         //build the converted file's path
         let fileExt = path.extname(filePath).replace(/^./, "")
@@ -130,7 +141,7 @@ export default class Serz {
     
         //execute serz.exe
         //serz usage: "/path/to/serz.exe file-to-convert.[extension] /[bin, xml]:converted-file.[extension]"
-        let {stdout, stderr} = await execPromise(`"${serzPath}" "${filePath}" /${this.isBinExtension(fileExt) ? "xml" : "bin"}:"${convertedFilePath}"`)
+        let {stdout, stderr} = await execPromise(`"${this.getSerzPath()}" "${filePath}" /${this.isBinExtension(fileExt) ? "xml" : "bin"}:"${convertedFilePath}"`)
         if(stderr.length !== 0) {
             throw new SerzError(SerzError.Code.ConversionFailed, stderr)
         } else if(!stdout.includes("Conversion complete")) {
