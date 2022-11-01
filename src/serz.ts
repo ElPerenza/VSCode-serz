@@ -12,7 +12,9 @@ const execPromise = promisify(exec)
  */
 export default class Serz {
 
-    //map of the extensions and their converted equivalent
+    /**
+     * Map of the extensions and their converted equivalent.
+     */
     private static readonly extensionMappings = new Map<string, string>([
         ["xml", "bin"],
         ["proxyxml", "proxybin"],
@@ -22,9 +24,10 @@ export default class Serz {
         ["TgPcDx", "xml"],
         ["XSec", "xml"],
     ])
-
-    //"special" bin extensions refers to binary files that are converted to a file with .xml extension instead of having a custom one (like .proxybin with .proxyxml)
-    //when being converted back to binary from text, these files have to be renamed after conversion as serz.exe doesn't know how to deal with these extensions
+    /**
+     * "Special" bin extensions refers to binary files that are converted to a file with .xml extension instead of having a custom one (like .proxybin with .proxyxml).
+     * When being converted back to binary from text, these files have to be renamed after conversion as serz.exe doesn't know how to deal with these extensions.
+     */
     private static readonly specialBinExtensions = ["GeoPcDx", "TgPcDx", "XSec"]
 
     /**
@@ -45,7 +48,6 @@ export default class Serz {
      * @param context the context of the executing extension
      * @param serzPathKey the `WorkspaceConfiguration` key where the path to the serz executable is stored
      * @param specialBinFilesKey the `context.globalState` key where to store the mappings for converting GeoPcDx, TgPcDx and XSec files
-     * @throws {@linkcode SerzError} if the serz executable file found in the configuration is incorrect or if the conversion process fails.
      */
     public constructor(
         private readonly context: ExtensionContext, 
@@ -76,38 +78,57 @@ export default class Serz {
     }
 
     /**
+     * Retrieves the mappings for "special" binary files from the global state.
+     * @returns the mappings between converted special bin file paths and their original extension
+     */
+    private getSpecialBinFiles(): Record<string, string> {
+        return this.context.globalState.get(this.specialBinFilesKey)
+    }
+
+    /**
+     * Updates the mappings for "special" binary files in the global state.
+     * @param value the updated mappings between converted special bin file paths and their original extension
+     */
+    private updateSpecialBinFiles(value: Record<string, string>): void {
+        this.context.globalState.update(this.specialBinFilesKey, value)
+    }
+
+    /**
      * Converts the given file with serz.exe.
      * @param filePath path to the file to convert
      * @returns the path to the converted file
+     * @throws {@linkcode SerzError} if the serz executable file found in the configuration is incorrect or if the conversion process fails.
      */
     public async convert(filePath: string): Promise<string> {
 
-        //get the serz.exe path from the settings
+        //get the serz.exe path from the settings and verify that it exists
         let serzPath = workspace.getConfiguration().get<string>(this.serzPathKey) ?? ""
-        //if the path set in the settings is a directory, try to search for serz inside that folder
-        if((await fsp.lstat(serzPath)).isDirectory()) {
-            serzPath = path.join(serzPath, "serz.exe")
-        }
         if(!fs.existsSync(serzPath)) {
             throw new SerzError(SerzError.Code.SerzPathInvalid, `Path "${serzPath}" does not exist.`)
         }
+        if((await fsp.lstat(serzPath)).isDirectory()) {
+            serzPath = path.join(serzPath, "serz.exe")
+            if(!fs.existsSync(serzPath)) {
+                throw new SerzError(SerzError.Code.SerzPathInvalid, `Path "${serzPath}" does not exist.`)
+            }
+        }
 
         //build the converted file's path
-        let fileExt = path.extname(filePath).replace(/^./, "") //strip leading dot
+        let fileExt = path.extname(filePath).replace(/^./, "")
         let convertedExt = Serz.extensionMappings.get(fileExt)
         let convertedFilePath = filePath.replace(new RegExp(`(${fileExt})$`), convertedExt)
     
         //if the original file is a "special" bin file, store the converted file path and original extension,
         //so that it can be converted to binary from text correctly later on
         if(this.isSpecialBinExtension(fileExt)) {
-            let specialBinFiles = this.context.globalState.get<Record<string, string>>(this.specialBinFilesKey)
+            let specialBinFiles = this.getSpecialBinFiles()
             if(specialBinFiles !== undefined) {
                 specialBinFiles[convertedFilePath] = fileExt
-                this.context.globalState.update(this.specialBinFilesKey, specialBinFiles)
+                this.updateSpecialBinFiles(specialBinFiles)
             }
         }
     
-        //execute serz.exe and throw an error if something went wrong
+        //execute serz.exe
         //serz usage: "/path/to/serz.exe file-to-convert.[extension] /[bin, xml]:converted-file.[extension]"
         let {stdout, stderr} = await execPromise(`"${serzPath}" "${filePath}" /${this.isBinExtension(fileExt) ? "xml" : "bin"}:"${convertedFilePath}"`)
         if(stderr.length !== 0) {
@@ -118,11 +139,11 @@ export default class Serz {
         }
 
         //if the converted .xml file was originally a "special" bin file, rename the freshly created .bin file to the correct extension
-        let specialExt = this.context.globalState.get<Record<string, string>>(this.specialBinFilesKey)?.[filePath]
+        let specialExt = this.getSpecialBinFiles()?.[filePath]
         if(specialExt !== undefined) {
-            let specialFile = convertedFilePath.replace(new RegExp(`(${convertedExt})$`), specialExt)
-            await fsp.rename(convertedFilePath, specialFile)
-            return specialFile
+            let specialFilePath = convertedFilePath.replace(new RegExp(`(${convertedExt})$`), specialExt)
+            await fsp.rename(convertedFilePath, specialFilePath)
+            return specialFilePath
         } else {
             return convertedFilePath
         }

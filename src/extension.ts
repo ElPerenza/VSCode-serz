@@ -67,9 +67,9 @@ export function deactivate() {}
 async function convertThenOpen(serz: Serz, filePath: string): Promise<void> {
 	try {
 
-		let convertedFilePath = await window.withProgress({location: ProgressLocation.Notification}, async (progress) => {
+		let convertedFilePath = await window.withProgress({location: ProgressLocation.Notification}, (progress) => {
 			progress.report({message: `Converting "${filePath}"...`})
-			return await serz.convert(filePath)
+			return serz.convert(filePath)
 		})
 		window.showInformationMessage("Conversion complete")
 		//use this way to open files instead of vscode.workspace.openTextDocument because this method has no 50MB size limit like openTextDocument, 
@@ -84,7 +84,7 @@ async function convertThenOpen(serz: Serz, filePath: string): Promise<void> {
 				case SerzError.Code.SerzPathInvalid:
 					let selection = await window.showErrorMessage(`Invalid serz executable path: ${error.message}`, "Open settings")
 					if(selection === "Open settings") {
-						commands.executeCommand("workbench.action.openSettings", "vscode-serz.serzExePath")
+						commands.executeCommand("workbench.action.openSettings", serzPathKey)
 					}
 					break
 
@@ -92,6 +92,9 @@ async function convertThenOpen(serz: Serz, filePath: string): Promise<void> {
 					window.showErrorMessage(`Failed to convert ${filePath}: ${error.message}`)
 					break
 			}
+
+		} else {
+			window.showErrorMessage(`An error occurred: ${(error as Error).message}`)
 		}
 	}
 }
