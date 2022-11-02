@@ -60,12 +60,13 @@ export default class Serz {
     }
 
     /**
-     * Checks if the given extension corresponds to a binary file type.
-     * @param ext the extension to check
+     * Checks if the given file is a binary file.
+     * @param ext the file name to check
      * @returns true if binary, otherwise false
      */
-    private isBinExtension(ext: string): boolean {
-        return Serz.BIN_EXTENSIONS.includes(ext)
+    public static isBinFile(fileName: string): boolean {
+        let fileExt = path.extname(fileName).replace(/^./, "")
+        return Serz.BIN_EXTENSIONS.includes(fileExt)
     }
 
     /**
@@ -141,7 +142,7 @@ export default class Serz {
     
         //execute serz.exe
         //serz usage: "/path/to/serz.exe file-to-convert.[extension] /[bin, xml]:converted-file.[extension]"
-        let {stdout, stderr} = await execPromise(`"${this.getSerzPath()}" "${filePath}" /${this.isBinExtension(fileExt) ? "xml" : "bin"}:"${convertedFilePath}"`)
+        let {stdout, stderr} = await execPromise(`"${this.getSerzPath()}" "${filePath}" /${Serz.isBinFile(filePath) ? "xml" : "bin"}:"${convertedFilePath}"`)
         if(stderr.length !== 0) {
             throw new SerzError(SerzError.Code.ConversionFailed, stderr)
         } else if(!stdout.includes("Conversion complete")) {

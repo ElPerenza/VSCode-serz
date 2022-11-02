@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, ProgressLocation, Uri, window } from "vscode"
+import { commands, ExtensionContext, ProgressLocation, Uri, ViewColumn, window, workspace } from "vscode"
 import Serz from "./serz"
 import SerzError from "./serzError"
 
@@ -82,7 +82,8 @@ async function convertThenOpen(serz: Serz, filePath: string): Promise<void> {
 		window.showInformationMessage("Conversion complete")
 		//use this way to open files instead of vscode.workspace.openTextDocument because this method has no 50MB size limit like openTextDocument, 
 		//which is quite easy to exceed when working with RailWorks .xml files
-		await commands.executeCommand("vscode.open", Uri.file(convertedFilePath))
+		//background option opens editor in background (not in the docs for some reason --> https://github.com/microsoft/vscode/issues/96964)
+		await commands.executeCommand("vscode.open", Uri.file(convertedFilePath), {background: Serz.isBinFile(convertedFilePath)})
 
 	} catch(error) {
 		if(error instanceof SerzError) {

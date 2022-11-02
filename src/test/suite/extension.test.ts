@@ -2,6 +2,7 @@ import * as assert from "assert"
 import testConfig from "./config"
 import * as fs from "fs"
 import * as vscode from "vscode"
+import Serz from "../../serz"
 
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -35,12 +36,13 @@ function openFile(fileUri: vscode.Uri): Promise<void> {
  * @param convertedFileUri the URI pointing to the converted file
  */
 async function testConversion(originalFileUri: vscode.Uri, convertedFileUri: vscode.Uri): Promise<void> {
-	await openFile(originalFileUri)
-	await vscode.commands.executeCommand("vscode-serz.convertCurrent")
+	await vscode.commands.executeCommand("vscode-serz.convertCurrent", originalFileUri)
 	await sleep(1000)
-	//check that the converted file exists and is the currently active document
+	//check that the converted file exists and, if it's a text file, is the currently active document
 	assert(fs.existsSync(convertedFileUri.fsPath))
-	assert.strictEqual(vscode.window.activeTextEditor?.document.fileName, convertedFileUri.fsPath)
+	if(!Serz.isBinFile(convertedFileUri.fsPath)) {
+		assert.strictEqual(vscode.window.activeTextEditor?.document.fileName, convertedFileUri.fsPath)
+	}
 }
 
 describe("VSCode-serz tests", () => {
