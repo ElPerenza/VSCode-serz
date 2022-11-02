@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, ProgressLocation, Uri, ViewColumn, window, workspace } from "vscode"
+import { commands, ExtensionContext, ProgressLocation, Uri, window } from "vscode"
 import Serz from "./serz"
 import SerzError from "./serzError"
 
