@@ -51,6 +51,20 @@
           "when": "resourceExtname in vscode-serz.supportedFiles",
           "group": "serzGroup@1"
         }
+      ],
+      "explorer/context": [
+        {
+          "command": "vscode-serz.convertCurrent",
+          "when": "resourceExtname in vscode-serz.supportedFiles",
+          "group": "serzGroup@1"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "vscode-serz.convertCurrent",
+          "when": "resourceExtname in vscode-serz.supportedFiles",
+          "group": "serzGroup@1"
+        }
       ]
     },
     "keybindings": [
