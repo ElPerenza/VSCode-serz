@@ -9,28 +9,6 @@ function sleep(ms: number): Promise<void> {
 }
 
 /**
- * Opens the given file in the active editor.
- * @param fileUri the URI pointing to the file to open 
- */
-function openFile(fileUri: vscode.Uri): Promise<void> {
-	return new Promise((resolve, reject) => {
-		//check if the given file is already open in the active editor
-		if(vscode.window.activeTextEditor?.document.fileName === fileUri.fsPath) {
-			resolve()
-			return
-		}
-		let disposable = vscode.window.onDidChangeActiveTextEditor(() => {
-			//check that the active editor change corresponds to the file we wanted to open
-			if(vscode.window.activeTextEditor?.document.fileName === fileUri.fsPath) {
-				disposable.dispose()
-				resolve()
-			}
-		})
-		vscode.commands.executeCommand("vscode.open", fileUri).then(undefined, reject)
-	})
-}
-
-/**
  * Test that the extension can correctly convert the given file to a file pointing to the converted file URI.
  * @param originalFileUri the URI pointing to the file to convert
  * @param convertedFileUri the URI pointing to the converted file
