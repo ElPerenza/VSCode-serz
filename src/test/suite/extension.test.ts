@@ -1,7 +1,7 @@
-import * as assert from "assert"
+import assert from "assert"
 import testConfig from "./config"
-import * as fs from "fs"
-import * as vscode from "vscode"
+import fs from "fs"
+import vscode from "vscode"
 import Serz from "../../serz"
 
 function sleep(ms: number): Promise<void> {
