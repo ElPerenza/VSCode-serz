@@ -37,11 +37,19 @@ export function activate(context: ExtensionContext) {
 	})
 
 	//the "convertCurrent" command converts the currently open file
-	let cmdConvertCurrent = commands.registerCommand("vscode-serz.convertCurrent", async () => {
+	let cmdConvertCurrent = commands.registerCommand("vscode-serz.convertCurrent", async (resourceUri: Uri) => {
+
+		//resource uri is passed when the command is invoked from a context menu
+		if(resourceUri != undefined) {
+			await convertThenOpen(serz, resourceUri.fsPath)
+			return
+		}
+
 		let activeFilePath = window.activeTextEditor?.document.fileName
-		//for files bigger than 50MB activeTextEditor is undefined. As such, this command won't work, so direct the user to the "convert" command, which explicitly asks for the file to convert
+		//for files bigger than 50MB or files that are open in custom editors activeTextEditor is undefined. 
+		//As such, this command won't work, so direct the user to the "convert" command, which explicitly asks for the file to convert
 		if(activeFilePath === undefined) {
-			let selection = await window.showWarningMessage("It seems like you're currently trying to convert a file that is bigger than 50MB. " + 
+			let selection = await window.showWarningMessage("It seems like you're currently trying to convert a file that is bigger than 50MB or is open in a custom editor." + 
 																"Due to VSCode's technical limitations, you need to explicitly tell which file you want to convert", "Choose file")
 			if(selection === "Choose file") {
 				commands.executeCommand("vscode-serz.convert")
