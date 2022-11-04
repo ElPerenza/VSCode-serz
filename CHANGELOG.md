@@ -8,6 +8,7 @@ All notable changes to this extension will be documented in this file.
 ### Changed
 - Now >50Mb files can be converted with the `convertCurrent` command if it is invoked from a menu. Invoking it with the keybind or from the command palette still doesn't work.
 - When converting a file, now the converted file will be focused after opening only if it's a text file: binary files will be opened in a background tab.
+- README now recommends using a binary editor over the default text editor when opening binary files.
 ### Fixed
 - Fix bug that would make conversion fail silently when the serz path was a nonexistent directory.
 
