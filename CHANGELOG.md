@@ -2,7 +2,7 @@
 
 All notable changes to this extension will be documented in this file.
 
-## [Unreleased]
+## [1.2.0] - 2022-11-05
 ### Added
 - The `convertCurrent` command can now also be invoked from the file explorer and editor title context menus.
 ### Changed

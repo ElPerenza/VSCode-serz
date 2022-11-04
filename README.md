@@ -13,16 +13,16 @@ Like any other extension, you can install it through the integrated [Extensions 
 
 After having installed it, you need to change a couple of settings in the editor for it to work properly:
 - **Serz Exe Path**: The path to the serz executable to use for conversion. The path can either point directly at the serz.exe file or at the directory it's found in.
-- **Default Binary Editor**: The default editor with which to open binary files. Whilst not necessary for the extension to work, setting this to `default` will save you the hassle of having to specify each time how to open a binary file (like the .bin files used by RailWorks) in the editor.  
+- **Default Binary Editor**: The default editor with which to open binary files. Whilst not necessary for the extension to work, having a default editor set will save you the hassle of having to specify each time how to open a binary file. I'd recommend downloading a binary file viewer extension (Like Microsoft's [Hex Editor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)) and setting it as the default (for MS's Hex Editor that would be `hexEditor.hexedit`). You can get away with using the default text editor (the `default` option), but be careful to never save the file, as [it will corrupt it!](https://github.com/microsoft/vscode/issues/91958)
 
 And that's it! You can now seamlessly convert between `.bin` and `.xml` files without ever leaving the editor.
 
 ## Usage
 
 This extension exposes two commands to convert RailWorks files:
-- **Convert a file with serz** (`vscode-serz.convert`) lets you convert a .xml file to .bin and vice versa. You need to specify which file to convert yourself via the pop-up dialog. Can be invoked either via the Command Palette (open with `CTRL+SHIFT+P`) or via the keyboard shortcut `SHIFT+ALT+Q`.
-- **Convert current file with serz** (`vscode-serz.convertCurrent`) converts the currently focused file. This command requires no user input and can be invoked via che Command Palette, the keyboard shortcut `ALT+Q` or by right clicking on the file you want to convert and selecting "Convert current file with serz" from the opened menu.  
-Because of restrictions imposed by the editor, this command won't work with files that are larger than 50MB. If you need to convert large files, use the `convert` command instead.
+- **Convert a file with serz** (`vscode-serz.convert`) lets you convert a .xml file to .bin and vice versa. You need to specify which file to convert yourself via the pop-up dialog. Can be invoked either via the Command Palette (open with `CTRL+SHIFT+P` or `F1`) or via the keyboard shortcut `SHIFT+ALT+Q`.
+- **Convert current file with serz** (`vscode-serz.convertCurrent`) converts the currently focused file. This command requires no user input and can be invoked via che Command Palette, the keyboard shortcut `ALT+Q` or by the explorer, editor and editor title context menus.  
+Because of restrictions imposed by the editor, this command won't function when invoked via the Command Palette or keyboard shortcut when working with files that are larger than 50MB. Invoking the command from one of the context menus works even with large files.
 
 ### Supported file types:
 - `.bin`, `.proxybin`, `.GeoPcDx`, `.TgPcDx`, `.XSec` for binary files
