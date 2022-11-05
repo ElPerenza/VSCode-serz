@@ -1,32 +1,11 @@
-import * as assert from "assert"
+import assert from "assert"
 import testConfig from "./config"
-import * as fs from "fs"
-import * as vscode from "vscode"
+import fs from "fs"
+import vscode from "vscode"
+import Serz from "../../serz"
 
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-/**
- * Opens the given file in the active editor.
- * @param fileUri the URI pointing to the file to open 
- */
-function openFile(fileUri: vscode.Uri): Promise<void> {
-	return new Promise((resolve, reject) => {
-		//check if the given file is already open in the active editor
-		if(vscode.window.activeTextEditor?.document.fileName === fileUri.fsPath) {
-			resolve()
-			return
-		}
-		let disposable = vscode.window.onDidChangeActiveTextEditor(() => {
-			//check that the active editor change corresponds to the file we wanted to open
-			if(vscode.window.activeTextEditor?.document.fileName === fileUri.fsPath) {
-				disposable.dispose()
-				resolve()
-			}
-		})
-		vscode.commands.executeCommand("vscode.open", fileUri).then(undefined, reject)
-	})
 }
 
 /**
@@ -35,12 +14,13 @@ function openFile(fileUri: vscode.Uri): Promise<void> {
  * @param convertedFileUri the URI pointing to the converted file
  */
 async function testConversion(originalFileUri: vscode.Uri, convertedFileUri: vscode.Uri): Promise<void> {
-	await openFile(originalFileUri)
-	await vscode.commands.executeCommand("vscode-serz.convertCurrent")
+	await vscode.commands.executeCommand("vscode-serz.convertCurrent", originalFileUri)
 	await sleep(1000)
-	//check that the converted file exists and is the currently active document
+	//check that the converted file exists and, if it's a text file, is the currently active document
 	assert(fs.existsSync(convertedFileUri.fsPath))
-	assert.strictEqual(vscode.window.activeTextEditor?.document.fileName, convertedFileUri.fsPath)
+	if(!Serz.isBinFile(convertedFileUri.fsPath)) {
+		assert.strictEqual(vscode.window.activeTextEditor?.document.fileName, convertedFileUri.fsPath)
+	}
 }
 
 describe("VSCode-serz tests", () => {
