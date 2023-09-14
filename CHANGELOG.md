@@ -2,6 +2,10 @@
 
 All notable changes to this extension will be documented in this file.
 
+## [1.2.1] - 2023-09-15
+### Changed
+- Have better error messages when command execution fails during conversion to help with debugging.
+
 ## [1.2.0] - 2022-11-05
 ### Added
 - The `convertCurrent` command can now also be invoked from the file explorer and editor title context menus.
