@@ -139,15 +139,29 @@ export default class Serz {
                 this.updateSpecialBinFiles(specialBinFiles)
             }
         }
-    
-        //execute serz.exe
-        //serz usage: "/path/to/serz.exe file-to-convert.[extension] /[bin, xml]:converted-file.[extension]"
-        let {stdout, stderr} = await execPromise(`"${this.getSerzPath()}" "${filePath}" /${Serz.isBinFile(filePath) ? "xml" : "bin"}:"${convertedFilePath}"`)
-        if(stderr.length !== 0) {
-            throw new SerzError(SerzError.Code.ConversionFailed, stderr)
-        } else if(!stdout.includes("Conversion complete")) {
-            //serz.exe doesn't write errors to stderr but to stdout for some reason, so we treat any message not containing "Conversion complete" as an error
-            throw new SerzError(SerzError.Code.ConversionFailed, stdout)
+
+        try {
+
+            //execute serz.exe
+            //serz usage: "/path/to/serz.exe file-to-convert.[extension] /[bin, xml]:converted-file.[extension]"
+            let {stdout, stderr} = await execPromise(`"${this.getSerzPath()}" "${filePath}" /${Serz.isBinFile(filePath) ? "xml" : "bin"}:"${convertedFilePath}"`)
+            console.log(`"${this.getSerzPath()}" "${filePath}" /${Serz.isBinFile(filePath) ? "xml" : "bin"}:"${convertedFilePath}"`)
+
+            if(stderr.length !== 0) {
+                throw new SerzError(SerzError.Code.ConversionFailed, stderr)
+            } else if(!stdout.includes("Conversion complete")) {
+                //serz.exe doesn't write errors to stderr but to stdout for some reason, so we treat any message not containing "Conversion complete" as an error
+                throw new SerzError(SerzError.Code.ConversionFailed, stdout)
+            }
+
+        } catch(error) {
+            //rethrow errors thrown by exec() as SerzErrors and with a better message
+            if(error instanceof Error && 
+               "code" in error && typeof error.code === "number" && 
+               "stderr" in error && typeof error.stderr === "string") {
+                    let errorMessage = error.stderr.length !== 0 ? error.stderr : "No error message available."
+                    throw new SerzError(SerzError.Code.ConversionFailed, `${errorMessage} [Exit code ${error.code}]`)
+            }
         }
 
         //if the converted .xml file was originally a "special" bin file, rename the freshly created .bin file to the correct extension
